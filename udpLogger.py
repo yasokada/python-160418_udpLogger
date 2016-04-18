@@ -3,6 +3,8 @@ import socket
 from utilLogger import CUtilLogger
 
 '''
+v0.2 2016 Apr. 19
+	- fix bug > logged previously received string also
 v0.1 2016 Apr. 18
 	can log incoming message through port 7001
 	- add procData()
@@ -25,6 +27,7 @@ def procData(rcvdat, logger):
 	print workdat
 	logger.add(workdat)
 	logger.save()
+	logger.clear()
 
 def main():
 	# incoming data string port
