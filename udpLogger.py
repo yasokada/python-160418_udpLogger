@@ -4,6 +4,9 @@ from utilLogger import CUtilLogger
 
 '''
 v0.1 2016 Apr. 18
+	can log incoming message through port 7001
+	- add procData()
+	- add recvData()
 	- import CUtilLogger for logging
 '''
 
@@ -17,8 +20,11 @@ def recvData(datsock, rcvdat):
 		return rcvdat, True
 	return rcvdat, False
 
-def procData(rcvdat):
-	print rcvdat
+def procData(rcvdat, logger):
+	workdat = rcvdat.rstrip() # remove CR, LF
+	print workdat
+	logger.add(workdat)
+	logger.save()
 
 def main():
 	# incoming data string port
@@ -28,18 +34,16 @@ def main():
 	datsock.bind((datip, datport))
 	datsock.setblocking(0)
 
+	logger = CUtilLogger()
+
 	rcvdat = ""
 
 	# receive data
 	while 1:
 		rcvdat,rcvd = recvData(datsock, rcvdat)
 		if rcvd == True and "\n" in rcvdat:
-			procData(rcvdat)
+			procData(rcvdat, logger)
 			rcvdat = ""
-
-#logger = CUtilLogger()
-#logger.add("TEST")
-#logger.save()
 
 
 if __name__ == '__main__':
